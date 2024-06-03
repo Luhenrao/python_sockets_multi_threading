@@ -1,3 +1,4 @@
+#Alunos: Alysson Rafael, Carlos Eduardo, Gabriel Pereira e Luiz Henrique
 import socket
 import threading
 
@@ -11,6 +12,7 @@ SERVER = socket.gethostbyname(socket.gethostname())
 
 ADDR = (SERVER, PORT)
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+# Officially connecting to the server.
 client.connect(ADDR)
 
 def send(msg):

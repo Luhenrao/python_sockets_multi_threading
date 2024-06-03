@@ -1,16 +1,16 @@
 import socket
+import threading
 
 HEADER = 64
 PORT = 5050
 FORMAT = 'UTF-8'
 DISCONNECT_MESSAGE = "!DISCONNECT"
-# Whatever IP address you found from running ifconfig in terminal.
-# SERVER = ""
+# Whatever IP address you found from running ipconfig in terminal.
+SERVER = "10.30.13.82"
 SERVER = socket.gethostbyname(socket.gethostname())
 
 ADDR = (SERVER, PORT)
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# Officially connecting to the server.
 client.connect(ADDR)
 
 def send(msg):
@@ -20,12 +20,25 @@ def send(msg):
     send_length += b' ' * (HEADER - len(send_length))
     client.send(send_length)
     client.send(message)
-    print(client.recv(2048).decode(FORMAT))
 
-send("Hello World")
-input()
-send("Hello Matt")
-input()
-send("Hello Everyone")
-input()
-send(DISCONNECT_MESSAGE)
+def receive():
+    while True:
+        try:
+            message = client.recv(2048).decode(FORMAT)
+            if message:
+                print(f"[SERVER] {message}")
+        except OSError:
+            print("Socket error occurred.")
+            break
+
+receive_thread = threading.Thread(target=receive)
+receive_thread.start()
+
+while True:
+    msg = input()
+    send(msg)
+    if msg == DISCONNECT_MESSAGE:
+        break
+
+receive_thread.join()
+client.close()

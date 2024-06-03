@@ -1,3 +1,5 @@
+#Alunos: 
+#Alysson Rafael, Carlos Eduardo, Gabriel Pereira, Luiz Henrique
 import socket
 import threading
 

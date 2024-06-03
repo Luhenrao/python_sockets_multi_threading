@@ -5,6 +5,7 @@ import threading
 HEADER = 64
 PORT = 5050
 SERVER = "10.30.13.82"
+# SERVER = ""
 # Another way to get the local IP address automatically
 SERVER = socket.gethostbyname(socket.gethostname())
 print(SERVER)
@@ -16,10 +17,9 @@ DISCONNECT_MESSAGE = "!DISCONNECT"
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind(ADDR)
 
-# Lista para armazenar os clientes conectados
+#Clientes conectados
 connections = []
 
-# Função para lidar com a conexão de um cliente
 def handle_client(conn, addr):
     print(f"[NEW CONNECTION] {addr} connected.")
     connections.append(conn)
@@ -45,8 +45,7 @@ def handle_client(conn, addr):
     conn.close()
     if conn in connections:
         connections.remove(conn)
-
-# Função para iniciar o servidor
+        
 def start():
     server.listen()
     print(f"[LISTENING] Server is listening on {SERVER}")
@@ -56,6 +55,5 @@ def start():
         thread.start()
         print(f"[ACTIVE CONNECTIONS] {threading.activeCount() - 1}")
 
-# Inicia o servidor
 print("[STARTING] server is starting...")
 start()
